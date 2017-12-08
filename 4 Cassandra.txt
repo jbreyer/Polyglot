@@ -1,0 +1,42 @@
+//CREATE KEYSPACE
+CREATE KEYSPACE my_keyspace WITH replication = {'class':'SimpleStrategy', 'replication_factor':1};
+
+//USE NEW KEYSPACE
+USE my_keyspace;
+
+//Create a simple table
+CREATE TABLE user (first_name text, last_name text, PRIMARY KEY (first_name));
+
+//Insert an entry into the user table
+INSERT INTO user(first_name, last_name) VALUES ("John", "Doe");
+
+//Query for the newly inserted value
+SELECT * FROM user;
+
+//Let's delete John's last_name
+DELETE last_name FROM user WHERE first_name = 'Doe';
+
+//Let's see how many entries there are in our user table
+SELECT COUNT(*) FROM user;
+
+//Now let's drop the user table
+DROP TABLE user;
+
+//Let's re-create the user table with a title column
+CREATE TABLE user (first_name text, last_name text, title text, PRIMARY KEY(first_name));
+
+//And enter two values
+INSERT INTO user(first_name, last_name, title) VALUES ('Bill', 'Nguyen', 'Mr.');
+INSERT INTO user(first_name, last_name) VALUES ('Mary', 'Rodriguez');
+
+//Let's get the write time of the last_name
+SELECT first_name, last_name, WRITETIME(last_name) FROM user;
+
+//...and the first_name
+SELECT first_name, last_name, WRITETIME(first_name) FROM user;
+
+//Let's update Mary's last_name with a TTL
+UPDATE user USING TTL 3600 SET last_name = 'McDonald' WHERE first_name = 'Mary';
+
+//...and query for it
+SELECT first_name, last_name, TTL(last_name) FROM user;

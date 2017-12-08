@@ -1,0 +1,21 @@
+db.orders.insertOne({cust_id: "abc123", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 25, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
+db.orders.insertOne({cust_id: "abc456", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 225, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
+db.orders.insertOne({cust_id: "abc123", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 60, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
+db.orders.insertOne({cust_id: "abc123", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 215, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
+db.orders.insertOne({cust_id: "abc123", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 125, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
+db.orders.insertOne({cust_id: "abc456", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 25, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
+db.orders.insertOne({cust_id: "abc456", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 80, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
+
+var mapFunction1 = function() {
+                       emit(this.cust_id, this.price);
+                   };
+
+var reduceFunction1 = function(keyCustId, valuesPrices) {
+                          return Array.sum(valuesPrices);
+                      };
+
+db.orders.mapReduce(
+                     mapFunction1,
+                     reduceFunction1,
+                     { out: "map_reduce_example" }
+                   )

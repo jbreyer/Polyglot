@@ -1,0 +1,26 @@
+//RIAK Examples
+//Julian Breyer
+//6 DEC 2017
+
+//Let RIAK generate a key for you
+curl -i -H "Content-Type: plain/text" -d "Some text" http://localhost:8098/riak/foo
+
+//Or define it yourself
+curl -i -d '{"name":"John Doe"}' -H "Content-Type: application/json" http://localhost:8098/riak/artists/John
+
+//Query for the data we just posted
+curl http://localhost:8098/riak/artists/John
+
+//Update the object we just created with John's nickname
+curl -i -X PUT -d '{"name":"John Nommensen Duchac", "nickname":"John Doe"}' -H "Content-Type: application/json" http://localhost:8098/riak/artists/John
+
+//Or delete him
+curl -i -X DELETE http://localhost:8098/riak/artists/John
+
+//Create links between buckets
+curl -i -X PUT -d '{"name":"John Nommensen Duchac", "nickname":"John Doe"}' -H "Content-Type: application/json" http://localhost:8098/riak/artists/John
+curl -H "Content-Type: text/plain" -H 'Link: </riak/artists/John>; riaktag="performer"' -d "Los Angeles" http://localhost:8098/riak/albums/LosAngeles
+curl -H "Content-Type: text/plain" -H 'Link: </riak/artists/John>; riaktag="performer"' -d "Under The Big Black Sun" http://localhost:8098/riak/albums/UnderTheBigBlackSun
+
+//Let's walk the link
+curl -i http://localhost:8098/riak/albums/LosAngeles/artists,performer,1
