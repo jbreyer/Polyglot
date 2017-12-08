@@ -95,8 +95,16 @@ INSERT INTO item (id, isbn, itemname, price) VALUES (0, NULL, 'toothbrush', 1.99
 CREATE TABLE order_item (id int PRIMARY KEY, order_id int REFERENCES cust_order(order_id), item_id int REFERENCES item(id));
 
 -- CREATE SOME ORDERS
+BEGIN;
 INSERT INTO cust_order (order_id, customer_id) VALUES (0, 0), (1,1), (2,1), (3,2);
 INSERT INTO order_item (id, order_id, item_id) VALUES (0, 0, 0), (1, 0, 2), (2, 1, 1), (3, 2, 2), (4, 2, 0), (5, 3, 0); 
+COMMIT;
+
+-- LETS CREATE ONE MORE
+BEGIN;
+INSERT INTO cust_order (order_id, customer_id) VALUES (4, 17);
+INSERT INTO order_item(id, order_id, item_id) VALUES (6, 4, 0);
+COMMIT;
 
 -- GET ALL CUSTOMERS WITH THEIR ADDRESS
 select customer.name, address.street, address.city, address.zip, address.state, address.country FROM customer LEFT JOIN address ON customer.primary_address = address.id;
