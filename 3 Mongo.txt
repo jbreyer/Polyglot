@@ -1,3 +1,29 @@
+//Mongodb example
+//Julian Breyer
+//6 DEC 2017
+
+//Let's create an entry for a book
+db.items.insertOne({item_no: "11052", title: "Land of Lisp", author: "Conrad Barski, M.D.", "subtitle": "Learn To Program LISP, one game at a time!", publication: "2011", publisher: "No Starch Press", dimensions: {width: "4.25in", length: "5.5in"}, isbn: "9781593272814", price: "$49.95"})
+
+//And maybe one for a movie
+db.items.insertOne({item_no: "11053", title: "Batman", starring: ["Jack Nicholson", "Michael Keaton", "Kim Basinger"], review: "A Triumph. You can't take your eyes off it!", director: "Tim Burton", publisher: "Warner Bros.", release_year: "1989", isbn: "1419893521", price: "$9.95"})
+
+//Find all items we have so far
+db.items.find()
+
+//Find Batman in our inventory
+db.items.find({title: "Batman"}, {_id: 0})
+
+//Update the price of Batman to $5.00 for a sale
+db.items.updateOne({title: "Batman"}, {
+     $set: { "price": "$5.00"},
+     $currentDate: { lastModified: true }
+   })
+
+//Let's delete our catalog
+db.items.deleteMany({})
+
+//Now we'll create a few orders for two fictitious customers
 db.orders.insertOne({cust_id: "abc123", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 25, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
 db.orders.insertOne({cust_id: "abc456", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 225, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
 db.orders.insertOne({cust_id: "abc123", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 60, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
@@ -6,6 +32,7 @@ db.orders.insertOne({cust_id: "abc123", ord_date: new Date("Oct 04, 2012"), stat
 db.orders.insertOne({cust_id: "abc456", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 25, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
 db.orders.insertOne({cust_id: "abc456", ord_date: new Date("Oct 04, 2012"), status: 'A', price: 80, items: [ { sku: "mmm", qty: 5, price: 2.5 }, { sku: "nnn", qty: 5, price: 2.5 } ]})
 
+//...and write a simple map reduce function to get the order totals per customer
 var mapFunction1 = function() {
                        emit(this.cust_id, this.price);
                    };
