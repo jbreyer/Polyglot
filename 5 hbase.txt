@@ -1,0 +1,36 @@
+//hbase shell command overview
+//Julian Breyer
+//11 DEC 2017
+
+//List all tables
+list
+
+//Create a table with two column families
+create 'email', 'metadata', 'content'
+
+//Describe the newly created table
+describe 'email'
+
+//Delete a column family
+alter 'email', 'delete' => 'content' 
+
+//select all data in the table
+scan 'email'
+
+//add some data
+put 'email','1','metadata:server','UTINHU1P'
+
+//lets change that to UTINH1Q
+put 'email','1','metadata:server',’UTINHU1Q’
+
+//read only the first row
+get 'email', '1'
+
+//read only the server column
+get 'email', ‘1’, {COLUMN => 'metadata:server'}
+
+//delete only the server column
+delete 'email', '1', 'metadata:server', 1417521849999
+
+//or delete the whole row
+deleteall 'email', '1'
