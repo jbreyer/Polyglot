@@ -70,6 +70,9 @@ INSERT INTO address (id, street, city, zip, state, country) VALUES (0, '1337 Pin
 (2, '35 Longview Dr', 'Davis', '26115', 'WV', 'USA'),
 (3, '21000 Hollywood Blvd', 'Beverly Hills', '91210', 'CA', 'USA');
 
+-- Lets try inserting an address with a state code that doesn't exist
+INSERT INTO address (id, street, city, zip, state, country) VALUES (4, 'Avenida Acapulco #99', 'Tijuana', '21400', 'BC', 'Mexico');
+
 -- CREATE CUSTOMER TABLE
 CREATE TABLE customer (id int PRIMARY KEY, name varchar NOT NULL, primary_address int REFERENCES address(id) NOT NULL);
 
@@ -104,7 +107,7 @@ COMMIT;
 BEGIN;
 INSERT INTO cust_order (order_id, customer_id) VALUES (4, 17);
 INSERT INTO order_item(id, order_id, item_id) VALUES (6, 4, 0);
-COMMIT;
+ROLLBACK;
 
 -- GET ALL CUSTOMERS WITH THEIR ADDRESS
 select customer.name, address.street, address.city, address.zip, address.state, address.country FROM customer LEFT JOIN address ON customer.primary_address = address.id;
