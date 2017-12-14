@@ -21,13 +21,13 @@ scan 'email'
 put 'email','1','metadata:server','UTINHU1P'
 
 //lets change that to UTINH1Q
-put 'email','1','metadata:server',’UTINHU1Q’
+put 'email','1','metadata:server','UTINHU1Q'
 
 //read only the first row
 get 'email', '1'
 
 //read only the server column
-get 'email', ‘1’, {COLUMN => 'metadata:server'}
+get 'email', '1', {COLUMN => 'metadata:server'}
 
 //delete only the server column
 delete 'email', '1', 'metadata:server', 1417521849999
